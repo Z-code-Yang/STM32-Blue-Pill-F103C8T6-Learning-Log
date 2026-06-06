@@ -44,9 +44,9 @@ int main(void)
     GPIOC_CRH &= ~(0xFU << 20);
     GPIOC_CRH |=  (0x2U << 20);
 
-    STK_LOAD = 8000U - 1U;
-    STK_VAL = 0;
-    STK_CTRL = (1U << 0) | (1U << 1) | (1U << 2);
+    STK_LOAD = 8000U - 1U; //load the cycle for counting formula is time = cycle/fre
+    STK_VAL = 0;//reset the current count to 0
+    STK_CTRL = (1U << 0) | (1U << 1) | (1U << 2);//turn on the interrupt and counter enable and select Processor clock source
 
     while(1)
     {
@@ -55,11 +55,11 @@ int main(void)
 
 void SysTick_Handler(void)
 {
-	ticks++;
+	ticks++;//tick incrment every 1ms base on the cycle and clock source 
 	if(ticks >= 500)
 	{
 		GPIOC_ODR ^= (1U << 13);
-		ticks = 0;
+		ticks = 0; //reset the tick 
 	}
 
 }
